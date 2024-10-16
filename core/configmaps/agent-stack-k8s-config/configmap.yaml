@@ -1,0 +1,12 @@
+# Source: agent-stack-k8s/templates/config.yaml.tpl
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-stack-k8s-config
+  namespace: buildkite
+data:
+  config.yaml: |
+    agent-token-secret: agent-stack-k8s-secrets
+    namespace: buildkite
+    image: ghcr.io/buildkite/agent@sha256:1f7733f0da24de76004d2ec3352c7984d30180590f595825d5ba65e080d40a22
+    org: Moc-test
