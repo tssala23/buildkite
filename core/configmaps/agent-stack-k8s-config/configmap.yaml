@@ -14,6 +14,10 @@ data:
       envFrom:
       - configMapRef:
           name: agent-stack-k8s-env-vars-config
+    default-command-params:
+      envFrom:
+      - configMapRef:
+          name: agent-stack-k8s-env-vars-config
     image: ghcr.io/buildkite/agent@sha256:1f7733f0da24de76004d2ec3352c7984d30180590f595825d5ba65e080d40a22
     image-pull-backoff-grace-period: 60s
     job-ttl: 5m
