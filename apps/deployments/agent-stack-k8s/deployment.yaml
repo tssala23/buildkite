@@ -13,8 +13,8 @@ spec:
       labels:
         app: agent-stack-k8s
       annotations:
-        checksum/config: 84c3b0a8f05fd7fe6259cd2859a7c70a25e221e09871747f4f3e8ac7bce85993
-        checksum/secrets: 7f2c38e6b9d094cb0abcbae03e0706d16ec2a2575735810806a7a2922b45bc72
+        checksum/config: 5664ec5f728d072f034282613ef87293cd7a15d5e6a9727bccaf5f0945322523
+        checksum/secrets: 7e532082934375fce3136bb7ad13bbda6020e5655ee1b8b53bd16002311d6ba1
     spec:
       serviceAccountName: agent-stack-k8s-controller
       nodeSelector: {}
