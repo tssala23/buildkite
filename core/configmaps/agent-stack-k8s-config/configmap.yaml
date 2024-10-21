@@ -22,7 +22,7 @@ data:
     image-pull-backoff-grace-period: 60s
     job-ttl: 5m
     max-in-flight: 100
-    org: test-org
+    org: test-org-68
     pod-spec-patch:
       containers:
       - name: agent
@@ -33,5 +33,5 @@ data:
     poll-interval: 5s
     prohibit-kubernetes-plugin: true
     tags:
-    - queue=kubernetes
+    - queue=default
     - priority=high
