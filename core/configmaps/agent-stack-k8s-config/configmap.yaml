@@ -8,9 +8,13 @@ data:
   config.yaml: |
     agent-token-secret: agent-stack-k8s-secrets
     namespace: buildkite
-    cluster-uuid: c338c74e-985e-4345-948e-fe530a7e1184
+    cluster-uuid: e363091a-be4d-4cbd-b5ba-2e0a6d70d9f7
     debug: false
     default-checkout-params:
+      envFrom:
+      - configMapRef:
+          name: agent-stack-k8s-env-vars-config
+    default-command-params:
       envFrom:
       - configMapRef:
           name: agent-stack-k8s-env-vars-config
@@ -18,7 +22,7 @@ data:
     image-pull-backoff-grace-period: 60s
     job-ttl: 5m
     max-in-flight: 100
-    org: moc-test
+    org: test-org
     pod-spec-patch:
       containers:
       - name: agent
@@ -29,5 +33,5 @@ data:
     poll-interval: 5s
     prohibit-kubernetes-plugin: true
     tags:
-    - queue=default
+    - queue=kubernetes
     - priority=high

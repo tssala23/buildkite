@@ -8,4 +8,4 @@ data:
 kind: ConfigMap
 metadata:
   name: agent-stack-k8s-env-vars-config
-  namespace: buildkite
+  # namespace: buildkite
