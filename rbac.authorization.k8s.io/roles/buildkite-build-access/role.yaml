@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: build-access
+  namespace: buildkite
+rules:
+  - apiGroups:
+      - build.openshift.io
+    resources:
+      - builds
+      - builds/log
+      - buildconfigs/instantiate
+    verbs:
+      - get
+      - list
+      - watch
+      - create
