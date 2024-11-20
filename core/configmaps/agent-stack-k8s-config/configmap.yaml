@@ -28,6 +28,9 @@ data:
       - name: agent
       - name: checkout
       - name: container-0
+        image: quay.io/dtrifiro/buildkite-toolchain:latest
+        imagePullPolicy: Always
+        workingDir: /tmp/
       initContainers:
       - name: copy-agent
     poll-interval: 5s
