@@ -1,8 +1,8 @@
-# Source: agent-stack-k8s/templates/config.yaml.tpl
+\# Source: agent-stack-k8s/templates/config.yaml.tpl
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: agent-stack-k8s-config
+  name: agent-stack-k8s-config-vllm-image
   namespace: buildkite
 data:
   config.yaml: |
@@ -28,10 +28,11 @@ data:
       - name: agent
       - name: checkout
       - name: container-0
+        image: image-registry.openshift-image-registry.svc:5000/buildkite/vllm-main-test:latest
       initContainers:
       - name: copy-agent
     poll-interval: 5s
     prohibit-kubernetes-plugin: true
     tags:
-    - queue=default
+    - queue=vllm-image
     - priority=high

@@ -1,0 +1,19 @@
+# Start with a Fedora base image
+FROM fedora:latest as tools
+
+# Install oc $ kubectl
+RUN curl -L -o /tmp/openshift-client-linux.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz && \
+    tar -xvf /tmp/openshift-client-linux.tar.gz -C /usr/local/bin/ oc && \
+    chmod +x /usr/local/bin/oc
+
+RUN curl -LO "https://dl.k8s.io/release/v1.31.2/bin/linux/amd64/kubectl" && \
+    chmod +x kubectl && \
+    mv kubectl /usr/local/bin/
+
+# Multistage build, we just want ot add oc/kubectl to the already existing buildkite controller
+FROM ghcr.io/buildkite/agent-stack-k8s/controller:0.16.1 as controller
+
+# Copy oc and kubectl binaries
+COPY --from=tools /usr/local/bin/oc /usr/local/bin/oc
+
+COPY --from=tools /usr/local/bin/kubectl /usr/local/bin/kubectl

@@ -1,0 +1,59 @@
+# Source: agent-stack-k8s/templates/deployment.yaml.tpl
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-stack-k8s-vllm
+  namespace: buildkite
+spec:
+  selector:
+    matchLabels:
+      app: agent-stack-k8s
+  template:
+    metadata:
+      labels:
+        app: agent-stack-k8s
+      annotations:
+        checksum/config: 1dc38042856bee8066f213a4df933de4f9a6dafb97fc7c3859b69d13ea6d3449
+        checksum/secrets: af6a433eab5b5e5db0860ec21d94a448516f5721a7c19993fd349481dd15cfc7
+    spec:
+      serviceAccountName: agent-stack-k8s-controller
+      nodeSelector: {}
+      tolerations: []
+      containers:
+        - name: controller
+          terminationMessagePolicy: FallbackToLogsOnError
+          image: ghcr.io/buildkite/agent-stack-k8s/controller:0.16.1@sha256:8abf162a9bda5fbce301a268b929c71f4267bfd87d49aab211ed94feeaaed89f
+          env:
+            - name: BUILDKITE_AGENT_META_DATA_QUEUE
+              value: "vllm-image"
+            - name: CONFIG
+              value: /etc/config.yaml
+          envFrom:
+            - secretRef:
+                name: agent-stack-k8s-secrets
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config.yaml
+              subPath: config.yaml
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+      volumes:
+        - name: config
+          configMap:
+            name: agent-stack-k8s-config-vllm-image
+        - name: shm-volume
+          emptyDir: {}
+        - name: huggingface-cache
+          emptyDir: {}
+
