@@ -11,7 +11,7 @@ RUN curl -LO "https://dl.k8s.io/release/v1.31.2/bin/linux/amd64/kubectl" && \
     mv kubectl /usr/local/bin/
 
 # Multistage build, we just want ot add oc/kubectl to the already existing buildkite controller
-FROM ghcr.io/buildkite/agent-stack-k8s/controller:0.16.1 as controller
+FROM ghcr.io/buildkite/agent-stack-k8s/controller:0.20.0 as controller
 
 # Copy oc and kubectl binaries
 COPY --from=tools /usr/local/bin/oc /usr/local/bin/oc

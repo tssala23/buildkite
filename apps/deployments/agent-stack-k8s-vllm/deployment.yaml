@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: agent-stack-k8s-vllm
-  namespace: buildkite
+  namespace: buildkite-vllm
 spec:
   selector:
     matchLabels:
@@ -22,10 +22,10 @@ spec:
       containers:
         - name: controller
           terminationMessagePolicy: FallbackToLogsOnError
-          image: ghcr.io/buildkite/agent-stack-k8s/controller:0.16.1@sha256:8abf162a9bda5fbce301a268b929c71f4267bfd87d49aab211ed94feeaaed89f
+          image: ghcr.io/buildkite/agent-stack-k8s/controller:0.20.0
           env:
             - name: BUILDKITE_AGENT_META_DATA_QUEUE
-              value: "vllm-image"
+              value: "moc-a100"
             - name: CONFIG
               value: /etc/config.yaml
           envFrom:
@@ -52,8 +52,3 @@ spec:
         - name: config
           configMap:
             name: agent-stack-k8s-config-vllm-image
-        - name: shm-volume
-          emptyDir: {}
-        - name: huggingface-cache
-          emptyDir: {}
-

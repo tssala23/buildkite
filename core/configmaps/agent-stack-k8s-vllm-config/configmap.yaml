@@ -3,12 +3,12 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: agent-stack-k8s-config-vllm-image
-  namespace: buildkite
+  namespace: buildkite-vllm
 data:
   config.yaml: |
     agent-token-secret: agent-stack-k8s-secrets
-    namespace: buildkite
-    cluster-uuid: 2ec33b8f-cb1b-4bb0-bdf8-d0f44ec6ea2b
+    namespace: buildkite-vllm
+    cluster-uuid: 9cecc6b1-94cd-43d1-a256-ab438083f4f5
     debug: false
     default-checkout-params:
       envFrom:
@@ -18,21 +18,31 @@ data:
       envFrom:
       - configMapRef:
           name: agent-stack-k8s-env-vars-config
-    image: quay.io/tsalawu0/buildkite-runner:latest
+    image: ghcr.io/buildkite/agent:3.87.1
     image-pull-backoff-grace-period: 60s
     job-ttl: 5m
     max-in-flight: 100
-    org: test-org2-5
+    org: vllm
     pod-spec-patch:
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB
       containers:
       - name: agent
       - name: checkout
       - name: container-0
-        image: image-registry.openshift-image-registry.svc:5000/buildkite/vllm-main-test:latest
+        resources:
+          limits:
+            cpu: "15"
+            memory: 200Gi
+            nvidia.com/gpu: "2"
+          requests:
+            cpu: "10"
+            memory: 100Gi
+            nvidia.com/gpu: "2"
       initContainers:
       - name: copy-agent
     poll-interval: 5s
     prohibit-kubernetes-plugin: true
     tags:
-    - queue=vllm-image
+    - queue=moc-a100
     - priority=high
